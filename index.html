@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day! ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffe6ea;
+            color: #d81b60;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(216, 27, 96, 0.2);
+            max-width: 90%;
+            width: 400px;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #c2185b;
+            line-height: 1.3;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #880e4f;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            min-height: 50px;
+        }
+
+        button {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        #btn-yes {
+            background-color: #ff4081;
+            color: white;
+        }
+
+        #btn-yes:hover {
+            background-color: #f50057;
+            transform: scale(1.1);
+        }
+
+        #btn-no {
+            background-color: #fff;
+            color: #ff4081;
+            border: 2px solid #ff4081;
+            position: absolute; /* Kunci biar bisa kabur */
+            right: 15%; /* Posisi awal */
+        }
+
+        /* Tampilan setelah klik YES */
+        #success-message {
+            display: none;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 10px 10px 20px 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: rotate(-3deg);
+            margin: 0 auto 20px auto;
+            max-width: 250px;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hiasan background */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 64, 129, 0.1);
+            z-index: 1;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-heart" style="top: 10%; left: 10%; font-size: 5rem;">❤️</div>
+    <div class="bg-heart" style="bottom: 20%; right: 15%; font-size: 8rem; animation-delay: 1s;">❤️</div>
+    <div class="bg-heart" style="top: 30%; right: 10%; font-size: 3rem; animation-delay: 2s;">❤️</div>
+
+    <div class="container" id="main-box">
+        <div id="question-box">
+            <h1>Hai Safrida... ❤️</h1>
+            <p>Hari ini kan Valentine, aku pengen nanya satu hal pentinggg.</p>
+            <h2 style="font-family: 'Pacifico', cursive; color: #ff4081; margin-bottom: 25px;">Will you be my Valentine?</h2>
+            
+            <div class="buttons">
+                <button id="btn-yes" onclick="acceptValentine()">YES!</button>
+                <button id="btn-no" onmouseover="dodgeButton()" onclick="dodgeButton()">NO</button>
+            </div>
+        </div>
+
+        <div id="success-message">
+            <div class="polaroid">
+                <img src="https://picsum.photos/300/400?random=1" alt="Our Photo">
+            </div>
+            <h1>Yeyyy! 🎉</h1>
+            <p>Makasiii ya udah selalu nemenin aku. I love you more than words can say. Happy Valentine's Day, Cacaaaa!</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const btnNo = document.getElementById('btn-no');
+        const questionBox = document.getElementById('question-box');
+        const successMessage = document.getElementById('success-message');
+
+        // Fungsi bikin tombol NO kabur
+        function dodgeButton() {
+            // Hitung ukuran layar aman biar tombol gak keluar layar
+            const containerRect = document.querySelector('.container').getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+            
+            // Random posisi X dan Y
+            const maxX = containerRect.width - btnRect.width - 20;
+            const maxY = containerRect.height - btnRect.height - 20;
+            
+            const randomX = Math.floor(Math.random() * 200) - 100; // Gerak acak kiri-kanan
+            const randomY = Math.floor(Math.random() * 150) - 75;  // Gerak acak atas-bawah
+            
+            btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        // Fungsi pas klik YES
+        function acceptValentine() {
+            // Sembunyikan pertanyaan, tampilkan pesan sukses
+            questionBox.style.display = 'none';
+            successMessage.style.display = 'block';
+
+            // Tembakkan Confetti
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                }));
+                confetti(Object.assign({}, defaults, { particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
